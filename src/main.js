@@ -59,6 +59,11 @@ Apify.main(async () => {
             if ($('#recaptcha').length) {
                 throw new Error('Captcha found, retrying...');
             }
+            
+            const stats = $('#result-stats');
+            if (stats.length) {
+                log.info(stats.text().trim());
+            } 
 
             request.userData.finishedAt = new Date();
 
