@@ -65,6 +65,11 @@ Apify.main(async () => {
                 log.info(stats.text().trim());
                 log.info('At: ' + request.url);
             } 
+            
+            const noResults = $('[aria-level="2"]');
+            if (noResults.length) {
+                log.info(noResults.contents().eq(0).text().trim());
+            }
 
             request.userData.finishedAt = new Date();
 
