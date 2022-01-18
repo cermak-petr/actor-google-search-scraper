@@ -106,7 +106,7 @@ Apify.main(async () => {
                 },
                 url: request.url,
                 hasNextPage: false,
-                resultsTotal: extractors.extractTotalResults($),
+                resultsTotal: noResults ? 0 : extractors.extractTotalResults($),
                 relatedQueries: extractors.extractRelatedQueries($, host),
                 paidResults: extractors.extractPaidResults($),
                 paidProducts: extractors.extractPaidProducts($),
