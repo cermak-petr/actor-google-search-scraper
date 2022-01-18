@@ -60,19 +60,21 @@ Apify.main(async () => {
                 throw new Error('Captcha found, retrying...');
             }
             
+            let noResults = false;
+            
             const stats = $('#result-stats');
             if (stats.length) {
                 if (stats.text().trim().includes('About 0 results')) {
                     log.info('No results found');
-                    process.exit(0);
+                    noResults = true;
                 }
             } 
             
-            const noResults = $('[aria-level="2"], .spell_orig');
-            if (noResults.length) {
-                if (noResults.contents().eq(0).text().trim().includes('No results found for')) {
+            const aria2 = $('[aria-level="2"], .spell_orig');
+            if (aria2.length) {
+                if (aria2.contents().eq(0).text().trim().includes('No results found for')) {
                     log.info('No results found');
-                    process.exit(0);
+                    noResults = true;
                 }
             }
 
@@ -108,7 +110,7 @@ Apify.main(async () => {
                 relatedQueries: extractors.extractRelatedQueries($, host),
                 paidResults: extractors.extractPaidResults($),
                 paidProducts: extractors.extractPaidProducts($),
-                organicResults: extractors.extractOrganicResults($, host),
+                organicResults: noResults ? [] : extractors.extractOrganicResults($, host),
                 peopleAlsoAsk: extractors.extractPeopleAlsoAsk($),
                 customData: customDataFunction
                     ? await executeCustomDataFunction(customDataFunction, { input, $, request, response, html: body, Apify })
