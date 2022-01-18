@@ -63,6 +63,7 @@ Apify.main(async () => {
             const stats = $('#result-stats');
             if (stats.length) {
                 log.info(stats.text().trim());
+                log.info('At: ' + request.url);
             } 
 
             request.userData.finishedAt = new Date();
