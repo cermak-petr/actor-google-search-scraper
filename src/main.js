@@ -62,13 +62,18 @@ Apify.main(async () => {
             
             const stats = $('#result-stats');
             if (stats.length) {
-                log.info(stats.text().trim());
-                log.info('At: ' + request.url);
+                if (stats.text().trim().includes('About 0 results')) {
+                    log.info('No results found');
+                    process.exit(0);
+                }
             } 
             
-            const noResults = $('[aria-level="2"]');
+            const noResults = $('[aria-level="2"], .spell_orig');
             if (noResults.length) {
-                log.info(noResults.contents().eq(0).text().trim());
+                if (noResults.contents().eq(0).text().trim().includes('No results found for')) {
+                    log.info('No results found');
+                    process.exit(0);
+                }
             }
 
             request.userData.finishedAt = new Date();
